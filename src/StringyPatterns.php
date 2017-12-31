@@ -5,6 +5,13 @@ namespace Stringy;
 use Exception;
 use InvalidArgumentException;
 
+/**
+ * Class StringyPatterns
+ *
+ * pat·tern : (noun) an arrangement or sequence regularly found in comparable objects or events.
+ *
+ * @package Stringy
+ */
 class StringyPatterns
 {
     /**
@@ -93,32 +100,27 @@ class StringyPatterns
     /**
      * Returns an key value array where keys are the patterns and the values are the occurrences.
      *
+     * When $withSingleOccurrences is <i>true</i>, substrings which were suspected as a pattern
+     * but didn't qualify will return NULL.
+     *
      * @param bool $withSingleOccurrences [optional]
      *                                    <p>
-     *                                    When set to true will also return the strings which have only a single occurrence
+     *                                    When set to true will also return the substrings which only have a single occurrence
      *                                    </p>
      *
      * @return array a key value array where the keys are the patterns and the values are the occurrences
      */
     public function getPatterns($withSingleOccurrences = false)
     {
-        // create a results hash table
         $results_table = [];
-        // let string length be STRING LENGTH
         $string_length = $this->strlen($this->str);
-
-        // let split by be 1
         $split_by = 1;
-        // let shift index be 0
         $shift_idx = 0;
 
-        // while string length is above 0
-        while ($string_length > 0) {
+        while ($string_length) {
 
-            // update string length
             $string_length = $this->strlen($this->str);
 
-            // while split by number is <= to string length
             while ($split_by <= $string_length) {
 
                 // split the string into pieces by using the split by number
@@ -142,8 +144,6 @@ class StringyPatterns
                             $results_table[$piece] = $count;
                         } else {
                             // insert the pattern and NULL as count into the results table
-                            // NULL signifies we've checked this case already and it is not answering to the definition of a pattern
-                            // it might be useful to know which patterns do not repeat in our string
                             $results_table[$piece] = null;
                         }
                     }

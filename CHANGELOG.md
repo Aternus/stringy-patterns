@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Fixed
 ### Security
 
+## [2.0.1] - 2018-09-09
+### Changed
+- Updated .gitignore.
+
 ## [2.0.0] - 2018-09-09
 ### Added
 - Changelog.

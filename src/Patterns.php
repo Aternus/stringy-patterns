@@ -2,17 +2,16 @@
 
 namespace Stringy;
 
-use Exception;
 use InvalidArgumentException;
 
 /**
- * Class StringyPatterns
+ * Class Patterns
  *
  * pat·tern : (noun) an arrangement or sequence regularly found in comparable objects or events.
  *
  * @package Stringy
  */
-class StringyPatterns
+class Patterns
 {
     /**
      * An instance's string.
@@ -29,7 +28,7 @@ class StringyPatterns
     protected $encoding;
 
     /**
-     * Initializes a StringyPatterns object and assigns both str and encoding properties the supplied values.
+     * Initializes a Patterns object and assigns both str and encoding properties the supplied values.
      * $str is cast to a string prior to assignment, and if $encoding is not specified,
      * it defaults to mb_detect_encoding().
      *
@@ -38,7 +37,8 @@ class StringyPatterns
      * @param  mixed  $str      Value to modify, after being cast to string
      * @param  string $encoding The character encoding
      *
-     * @throws \InvalidArgumentException if an array or object without a __toString method is passed as the first argument
+     * @throws \InvalidArgumentException if an array or object without a __toString method is passed as the first
+     *                                   argument
      */
     public function __construct($str = '', $encoding = null)
     {
@@ -46,7 +46,7 @@ class StringyPatterns
             throw new InvalidArgumentException(
                 'Passed value cannot be an array'
             );
-        } else if (is_object($str) && !method_exists($str, '__toString')) {
+        } elseif (is_object($str) && !method_exists($str, '__toString')) {
             throw new InvalidArgumentException(
                 'Passed object must have a __toString method'
             );
@@ -60,7 +60,7 @@ class StringyPatterns
     }
 
     /**
-     * Creates a StringyPatterns object and assigns both str and encoding properties the supplied values.
+     * Creates a Patterns object and assigns both str and encoding properties the supplied values.
      * $str is cast to a string prior to assignment, and if $encoding is not specified,
      * it defaults to mb_detect_encoding().
      *
@@ -69,8 +69,10 @@ class StringyPatterns
      * @param  mixed  $str      Value to modify, after being cast to string
      * @param  string $encoding The character encoding
      *
-     * @return static A StringyPatterns object
-     * @throws \InvalidArgumentException if an array or object without a __toString method is passed as the first argument
+     * @return static A Patterns object
+     *
+     * @throws \InvalidArgumentException if an array or object without a __toString method is passed as the first
+     *                                   argument
      */
     public static function create($str = '', $encoding = null)
     {
@@ -88,7 +90,7 @@ class StringyPatterns
     }
 
     /**
-     * Returns the encoding used by the StringyPatterns object.
+     * Returns the encoding used by the Patterns object.
      *
      * @return string The current value of the $encoding property
      */
@@ -105,7 +107,8 @@ class StringyPatterns
      *
      * @param bool $withSingleOccurrences [optional]
      *                                    <p>
-     *                                    When set to true will also return the substrings which only have a single occurrence
+     *                                    When set to true will also return the substrings which only have a single
+     *                                    occurrence
      *                                    </p>
      *
      * @return array a key value array where the keys are the patterns and the values are the occurrences
@@ -118,11 +121,9 @@ class StringyPatterns
         $shift_idx = 0;
 
         while ($string_length) {
-
             $string_length = $this->strlen($this->str);
 
             while ($split_by <= $string_length) {
-
                 // split the string into pieces by using the split by number
                 $pieces = [];
                 $tmp_string = $this->str;
@@ -153,7 +154,8 @@ class StringyPatterns
 
             $this->str = $this->substr($this->str, ++$shift_idx);
             // set split by number to 2
-            // if we split by 1 again it will be a waste of resources since we're 100% sure that we've already checked these patterns
+            // if we split by 1 again it will be a waste of resources since
+            // we're 100% sure that we've already checked these patterns
             $split_by = 2;
         }
 
@@ -162,7 +164,7 @@ class StringyPatterns
         }
 
         return array_filter($results_table, function ($v) {
-            return !is_null($v);
+            return $v !== null;
         });
     }
 
@@ -242,7 +244,7 @@ class StringyPatterns
      *
      * @return int This functions returns an integer.
      */
-    protected function substr_count($haystack, $needle)
+    protected function substr_count($haystack, $needle) // phpcs:ignore PSR1.Methods.CamelCapsMethodName.NotCamelCaps
     {
         if ($this->encoding !== 'ASCII') {
             return \mb_substr_count($haystack, $needle);

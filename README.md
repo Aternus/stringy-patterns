@@ -3,7 +3,7 @@
 A PHP string pattern detection library with multibyte support.
 
 ```php
-use Stringy\StringyPatterns as P;
+use Stringy\Patterns as P;
 
 // get all patterns
 $results_array = P::create('abcdabcdab')->getPatterns();
@@ -17,9 +17,11 @@ $results_array = P::create('abcdabcdab')->getPatterns(true);
 * [Other Useful Libraries](#other-useful-libraries)
 * [License](#license)
 
+
 ## Why?
 
 Patterns are all around us, perhaps _you_ will find something useful.
+
 
 ## Installation
 
@@ -37,13 +39,13 @@ require 'vendor/autoload.php';
 Otherwise, you can simply require the file directly:
 
 ```php
-require_once 'vendor/aternus/stringy-patterns/src/StringyPatterns.php';
+require_once 'vendor/aternus/stringy-patterns/src/Patterns.php';
 ```
 
 And in either case, I'd suggest using an alias.
 
 ```php
-use Stringy\StringyPatterns as P;
+use Stringy\Patterns as P;
 ```
 
 Please note that Stringy Patterns relies on the `mbstring` module for its underlying
@@ -53,11 +55,13 @@ Stringy Patterns using composer, Stringy Patterns will use
 For OSX users, it's a default for any version of PHP installed with homebrew.
 If compiling PHP from scratch, it can be included with the `--enable-mbstring` flag.
 
+
 ## Other Useful Libraries
 
- * [Stringy](https://github.com/danielstjules/Stringy):
+* [Stringy](https://github.com/danielstjules/Stringy):
 A PHP string manipulation library with multibyte support
+
 
 ## License
 
-Released under the MIT License - see `LICENSE.txt` for details.
+Released under the MIT License - see `LICENSE.md` for details.

@@ -1,84 +1,69 @@
 <?php
 
-use Stringy\StringyPatterns as P;
+namespace Stringy\Patterns\Tests;
 
-class StringyPatternsTestCase extends PHPUnit_Framework_TestCase
+use PHPUnit\Framework\TestCase;
+use Stringy\Patterns as StringyPatterns;
+
+final class PatternsTest extends TestCase
 {
-    /**
-     * Asserts that a variable is of a StringyPatterns instance.
-     *
-     * @param mixed $actual
-     */
-    public function assertStringyPatterns($actual)
+    public function assertValidInstance($actual)
     {
-        $this->assertInstanceOf('Stringy\StringyPatterns', $actual);
+        $this->assertInstanceOf(StringyPatterns::class, $actual);
     }
 
-    public function testConstruct()
+    /**
+     * Tests
+     *****************************************************/
+    public function testIsAValidInstance()
     {
-        $stringyPatterns = new P('abab', 'UTF-8');
-        $this->assertStringyPatterns($stringyPatterns);
+        $stringyPatterns = new StringyPatterns('abab', 'UTF-8');
+        $this->assertValidInstance($stringyPatterns);
         $this->assertEquals('abab', (string)$stringyPatterns);
         $this->assertEquals('UTF-8', $stringyPatterns->getEncoding());
     }
 
-    public function testEmptyConstruct()
+    public function testConstructEmpty()
     {
-        $stringyPatterns = new P();
-        $this->assertStringyPatterns($stringyPatterns);
+        $stringyPatterns = new StringyPatterns();
+        $this->assertValidInstance($stringyPatterns);
         $this->assertEquals('', (string)$stringyPatterns);
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
     public function testConstructWithArray()
     {
-        (string)new P([]);
+        $this->expectException(\InvalidArgumentException::class);
+        (string)new StringyPatterns([]);
         $this->fail('Expecting exception when the constructor is passed an array');
     }
 
-    /**
-     * @expectedException InvalidArgumentException
-     */
-    public function testMissingToString()
+    public function testMissingToStringMethod()
     {
-        (string)new P(new stdClass());
+        $this->expectException(\InvalidArgumentException::class);
+        (string)new StringyPatterns(new \stdClass());
         $this->fail('Expecting exception when the constructor is passed an object without a __toString method');
     }
 
     /**
-     * @dataProvider toStringProvider()
+     * @dataProvider providerToString()
      */
-    public function testToString($expected, $str)
+    public function testInstanceHasAWorkingToStringMethod($expected, $str)
     {
-        $this->assertEquals($expected, (string)new P($str));
+        $this->assertEquals($expected, (string)new StringyPatterns($str));
     }
 
-    public function toStringProvider()
+    public function testStaticCreate()
     {
-        return [
-            ['', null],
-            ['', false],
-            ['1', true],
-            ['-9', -9],
-            ['1.18', 1.18],
-            [' string  ', ' string  '],
-        ];
-    }
-
-    public function testCreate()
-    {
-        $stringyPatterns = P::create('abab', 'UTF-8');
-        $this->assertStringyPatterns($stringyPatterns);
+        $stringyPatterns = StringyPatterns::create('abab', 'UTF-8');
+        $this->assertValidInstance($stringyPatterns);
         $this->assertEquals('abab', (string)$stringyPatterns);
         $this->assertEquals('UTF-8', $stringyPatterns->getEncoding());
     }
 
     public function testGetPatterns()
     {
-        $stringyPatterns = new P('abcdabcdab');
-        $this->assertStringyPatterns($stringyPatterns);
+        $stringyPatterns = new StringyPatterns('abcdabcdab');
+        $this->assertValidInstance($stringyPatterns);
         $expected = [
             'a'    => 3,
             'b'    => 3,
@@ -102,8 +87,8 @@ class StringyPatternsTestCase extends PHPUnit_Framework_TestCase
 
     public function testGetPatternsWithSingles()
     {
-        $stringyPatterns = new P('abcdabcdab');
-        $this->assertStringyPatterns($stringyPatterns);
+        $stringyPatterns = new StringyPatterns('abcdabcdab');
+        $this->assertValidInstance($stringyPatterns);
         $expected = [
             'a'          => 3,
             'b'          => 3,
@@ -138,5 +123,20 @@ class StringyPatternsTestCase extends PHPUnit_Framework_TestCase
         ];
         $result = $stringyPatterns->getPatterns(true);
         $this->assertEquals($expected, $result);
+    }
+
+    /**
+     * Data Providers
+     *****************************************************/
+    public function providerToString()
+    {
+        return [
+            ['', null],
+            ['', false],
+            ['1', true],
+            ['-9', -9],
+            ['1.18', 1.18],
+            [' string  ', ' string  '],
+        ];
     }
 }
